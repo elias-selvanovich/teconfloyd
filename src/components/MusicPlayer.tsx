@@ -1,10 +1,6 @@
 import { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 
-interface MusicPlayerProps {
-    playlistUrl: string;
-}
-
 const PLAYLIST = [
     { title: "Breathe", url: "https://www.youtube.com/watch?v=jcz0YxYl6Ac" },
     { title: "One of these days", url: "https://www.youtube.com/watch?v=raV_A8YcBu0" },
