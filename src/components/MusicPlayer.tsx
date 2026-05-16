@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 
 const PLAYLIST = [
+    { title: "Welcome to the machine", url: "https://www.youtube.com/watch?v=Jh20cMEgvqc" },
     { title: "Breathe", url: "https://www.youtube.com/watch?v=jcz0YxYl6Ac" },
     { title: "One of these days", url: "https://www.youtube.com/watch?v=raV_A8YcBu0" },
     { title: "Time", url: "https://www.youtube.com/watch?v=yl-Ms_ek-kE" },
