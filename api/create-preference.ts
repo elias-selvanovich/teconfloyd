@@ -51,7 +51,7 @@ export default async function handler(req: any, res: any) {
       items: [
         {
           id: 'donacion_tc_floyd',
-          title: title || 'Aporte TC Floyd',
+          title: title || 'Aporte Te Con Floyd',
           quantity: 1,
           unit_price: Number(amount),
           currency_id: 'ARS',

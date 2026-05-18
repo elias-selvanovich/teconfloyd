@@ -2,7 +2,16 @@ import { useState } from 'react';
 import MusicPlayer from '../components/MusicPlayer';
 
 function Landing() {
-  const [activeSection, setActiveSection] = useState<string | null>("newsletter");
+  const [activeSection, setActiveSection] = useState<string | null>("");
+  const [email, setEmail] = useState("");
+
+  const handleNewsletterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      alert('¡Gracias por suscribirte! (Funcionalidad próximamente)');
+      setEmail('');
+    }
+  };
 
   const menuItems = [
     { id: "banda", name: "BANDA", href: "#banda" },
@@ -55,8 +64,32 @@ function Landing() {
             </ul>
           </nav>
 
+          {/* Minimal Newsletter Section */}
+          <div className="flex flex-col items-center text-center gap-3 w-full max-w-md mt-4 p-6 bg-zinc-900/20 border border-zinc-800/30 rounded-sm">
+            <h3 className="text-sm font-light tracking-[0.2em] uppercase text-zinc-300">Sumate al Newsletter</h3>
+            <p className="text-xs text-zinc-500 font-light mb-2">
+              Déjanos tu correo para enterarte antes que nadie de nuestras próximas fechas y novedades.
+            </p>
+            <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row w-full gap-2">
+              <input
+                type="email"
+                placeholder="tu@email.com"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="flex-1 bg-black/50 border border-zinc-800 px-4 py-2 text-white text-xs focus:outline-none focus:border-floyd-pink transition-all rounded-sm placeholder:text-zinc-600"
+              />
+              <button
+                type="submit"
+                className="bg-zinc-800 hover:bg-floyd-pink hover:text-black text-white px-4 py-2 uppercase tracking-widest text-[10px] sm:text-xs font-medium transition-all duration-300 rounded-sm"
+              >
+                Suscribirse
+              </button>
+            </form>
+          </div>
+
           <footer className="absolute bottom-8 text-white/20 text-xs tracking-widest uppercase">
-            TC  Floyd • Tributo a Pink Floyd • 2026
+            Te Con  Floyd • Tributo a Pink Floyd • 2026
           </footer>
         </main>
       </div>
@@ -130,15 +163,15 @@ function Landing() {
                   En Vivo / Sesiones
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                  
+
                   {/* Video 1 */}
                   <div className="aspect-video w-full bg-zinc-900 border border-zinc-800 rounded-sm relative group overflow-hidden">
                     {/* Reemplaza el 'ID_DEL_VIDEO' con el código que viene después de v= en tu link de YouTube */}
-                    <iframe 
+                    <iframe
                       className="w-full h-full grayscale group-hover:grayscale-0 transition-all duration-700"
-                      src="https://www.youtube.com/embed/hYfgA3oI7Zo?modestbranding=1&rel=0&color=white" 
-                      title="YouTube video player" 
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                      src="https://www.youtube.com/embed/hYfgA3oI7Zo?modestbranding=1&rel=0&color=white"
+                      title="YouTube video player"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                     ></iframe>
                     {/* Overlay sutil para integrar el video a la paleta antes de interactuar */}
@@ -147,14 +180,14 @@ function Landing() {
 
                   {/* Video 2 */}
                   <div className="aspect-video w-full bg-zinc-900 border border-zinc-800 rounded-sm relative group overflow-hidden">
-                    <iframe 
+                    <iframe
                       className="w-full h-full grayscale group-hover:grayscale-0 transition-all duration-700"
-                      src="https://www.youtube.com/embed/aBpJJ42Y4io?modestbranding=1&rel=0&color=white" 
-                      title="YouTube video player" 
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                      src="https://www.youtube.com/embed/aBpJJ42Y4io?modestbranding=1&rel=0&color=white"
+                      title="YouTube video player"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                     ></iframe>
-                     <div className="absolute inset-0 pointer-events-none border border-transparent group-hover:border-floyd-pink/50 transition-colors duration-500 rounded-sm shadow-[inset_0_0_20px_rgba(255,0,255,0)] group-hover:shadow-[inset_0_0_20px_rgba(255,0,255,0.2)]"></div>
+                    <div className="absolute inset-0 pointer-events-none border border-transparent group-hover:border-floyd-pink/50 transition-colors duration-500 rounded-sm shadow-[inset_0_0_20px_rgba(255,0,255,0)] group-hover:shadow-[inset_0_0_20px_rgba(255,0,255,0.2)]"></div>
                   </div>
 
                 </div>
@@ -165,10 +198,10 @@ function Landing() {
                 <h3 className="text-floyd-pink text-sm tracking-[0.3em] uppercase border-b border-floyd-pink/30 pb-2">
                   Galería
                 </h3>
-                
+
                 {/* Masonry-style Grid (Básico) */}
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  
+
                   {/* FOTO 1 - Rectangular */}
                   <div className="col-span-2 md:col-span-1 aspect-video md:aspect-square bg-zinc-900 overflow-hidden relative group">
                     <img src="/images/show-1.webp" alt="Show TC Floyd" className="w-full h-full object-cover grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
@@ -184,7 +217,7 @@ function Landing() {
                   <div className="aspect-square bg-zinc-900 overflow-hidden relative group">
                     <img src="/images/show-3.webp" alt="Show TC Floyd" className="w-full h-full object-cover grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
                   </div>
-                  
+
                   {/* FOTO 4 - Panorámica ancha (ocupa 2 columnas) */}
                   <div className="col-span-2 aspect-[21/9] bg-zinc-900 overflow-hidden relative group">
                     <img src="/images/banda.webp" alt="Show panorámico" className="w-full h-full object-cover grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
@@ -211,14 +244,14 @@ function Landing() {
               <div className="flex flex-col items-center justify-center py-12 px-4 border border-floyd-pink/20 bg-black relative overflow-hidden group">
                 {/* Brillo de fondo pulsante para generar expectativa */}
                 <div className="absolute inset-0 bg-floyd-pink/5 blur-xl group-hover:bg-floyd-pink/10 transition-colors duration-1000 animate-pulse-slow pointer-events-none"></div>
-                
+
                 <h3 className="text-xl md:text-2xl tracking-[0.3em] md:tracking-[0.5em] text-white uppercase z-10 text-center font-light">
                   Pronto Nuevas Fechas
                 </h3>
                 <p className="text-floyd-pink mt-4 tracking-[0.2em] md:tracking-[0.4em] text-xs md:text-sm font-light uppercase z-10 text-center opacity-80">
                   Gira 2026 en preparación
                 </p>
-                
+
                 {/* Líneas decorativas top y bottom */}
                 <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-floyd-pink/50 to-transparent"></div>
                 <div className="absolute bottom-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-floyd-pink/50 to-transparent"></div>
@@ -286,15 +319,15 @@ function Landing() {
 
               {/* Grid de Tarjetas de Contacto */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl mx-auto mt-4">
-                
+
                 {/* TARJETA EMAIL */}
-                <a 
-                  href="mailto:contacto@teconfloyd.ar" 
+                <a
+                  href="mailto:contacto@teconfloyd.ar"
                   className="flex flex-col items-center justify-center gap-4 p-8 md:p-10 bg-zinc-900/30 border border-zinc-800/50 hover:border-floyd-pink hover:bg-zinc-900/80 transition-all duration-500 group rounded-sm relative overflow-hidden"
                 >
                   {/* Resplandor de fondo on hover */}
                   <div className="absolute inset-0 bg-floyd-pink/0 group-hover:bg-floyd-pink/5 transition-colors duration-500"></div>
-                  
+
                   {/* Icono (SVG inline simple) */}
                   <svg className="w-8 h-8 text-zinc-500 group-hover:text-floyd-pink transition-colors duration-500 z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -311,14 +344,14 @@ function Landing() {
                 </a>
 
                 {/* TARJETA INSTAGRAM */}
-                <a 
-                  href="https://instagram.com/teconfloyd" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href="https://instagram.com/teconfloyd"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex flex-col items-center justify-center gap-4 p-8 md:p-10 bg-zinc-900/30 border border-zinc-800/50 hover:border-floyd-pink hover:bg-zinc-900/80 transition-all duration-500 group rounded-sm relative overflow-hidden"
                 >
                   <div className="absolute inset-0 bg-floyd-pink/0 group-hover:bg-floyd-pink/5 transition-colors duration-500"></div>
-                  
+
                   <svg className="w-8 h-8 text-zinc-500 group-hover:text-floyd-pink transition-colors duration-500 z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1">
                     <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                     <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
@@ -336,14 +369,14 @@ function Landing() {
                 </a>
 
                 {/* TARJETA YOUTUBE */}
-                <a 
-                  href="https://www.youtube.com/@TeConFloyd" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href="https://www.youtube.com/@TeConFloyd"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex flex-col items-center justify-center gap-4 p-8 md:p-10 bg-zinc-900/30 border border-zinc-800/50 hover:border-floyd-pink hover:bg-zinc-900/80 transition-all duration-500 group rounded-sm relative overflow-hidden"
                 >
                   <div className="absolute inset-0 bg-floyd-pink/0 group-hover:bg-floyd-pink/5 transition-colors duration-500"></div>
-                  
+
                   <svg className="w-8 h-8 text-zinc-500 group-hover:text-floyd-pink transition-colors duration-500 z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1">
                     <path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33 2.78 2.78 0 001.94 2C5.12 19.5 12 19.5 12 19.5s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.33 29 29 0 00-.46-5.33z"></path>
                     <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
@@ -376,7 +409,7 @@ function Landing() {
               <h2 className="text-3xl md:text-4xl font-light tracking-[0.3em] text-white uppercase text-center mb-2">
                 Prensa
               </h2>
-              
+
               <div className="flex flex-col gap-6 text-zinc-300 font-light leading-relaxed text-sm md:text-base text-center md:text-justify px-4">
                 <p>
                   Té Con Floyd es una banda tributo que rinde homenaje al legado inmortal de Pink Floyd.
@@ -389,8 +422,8 @@ function Landing() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-6 justify-center mt-4">
-                <a 
-                  href="/assets/gacetilla.pdf" 
+                <a
+                  href="/assets/gacetilla.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-3 px-8 py-4 bg-zinc-900/30 border border-zinc-800/50 hover:border-floyd-pink hover:bg-zinc-900/80 transition-all duration-500 group rounded-sm relative overflow-hidden text-zinc-300 hover:text-white uppercase tracking-widest text-sm"
@@ -401,9 +434,9 @@ function Landing() {
                   </svg>
                   <span className="z-10">Gacetilla</span>
                 </a>
-                
-                <a 
-                  href="/assets/rider.pdf" 
+
+                <a
+                  href="/assets/rider.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-3 px-8 py-4 bg-zinc-900/30 border border-zinc-800/50 hover:border-floyd-pink hover:bg-zinc-900/80 transition-all duration-500 group rounded-sm relative overflow-hidden text-zinc-300 hover:text-white uppercase tracking-widest text-sm"
@@ -415,14 +448,6 @@ function Landing() {
                   <span className="z-10">Rider</span>
                 </a>
               </div>
-            </div>
-          )}
-
-          {activeSection === 'newsletter' && (
-            <div className="flex flex-col gap-10">
-              <h2 className="text-3xl md:text-4xl font-light tracking-[0.3em] text-white uppercase text-center mb-2">
-                Newsletter
-              </h2>
             </div>
           )}
         </div>

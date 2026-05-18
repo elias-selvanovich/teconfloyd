@@ -20,7 +20,7 @@ export default function ShowPage() {
       const response = await fetch('/api/create-preference', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount, title: 'Aporte TC Floyd' })
+        body: JSON.stringify({ amount, title: 'Aporte Te Con Floyd' })
       });
 
       const data = await response.json();
@@ -56,7 +56,7 @@ export default function ShowPage() {
             <polygon points="50,2 98,85 2,85" fill="none" stroke="#ff00ff" strokeWidth="2" strokeLinejoin="round" className="opacity-90" />
           </svg>
           <h1 className="text-4xl md:text-5xl font-light tracking-[0.3em] uppercase mt-6 drop-shadow-[0_0_15px_rgba(255,0,255,0.3)]">
-            TC Floyd en Vivo
+            Te Con Floyd en Vivo
           </h1>
           <p className="text-floyd-pink tracking-[0.4em] text-sm uppercase font-light mt-2">
             Apoya a la banda
