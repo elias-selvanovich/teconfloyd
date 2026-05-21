@@ -10,6 +10,9 @@ export default function ShowPage() {
   const [showCustom, setShowCustom] = useState(false);
   const [email, setEmail] = useState('');
 
+  // Cambiar a true si deseas mostrar la seccion del newsletter en el show
+  const showNewsletter = false;
+
   const donationAmounts = [1000, 2000, 3000, 5000, 8000, 13000];
 
   const handleDonate = async (amount: number) => {
@@ -56,7 +59,7 @@ export default function ShowPage() {
             <polygon points="50,2 98,85 2,85" fill="none" stroke="#ff00ff" strokeWidth="2" strokeLinejoin="round" className="opacity-90" />
           </svg>
           <h1 className="text-4xl md:text-5xl font-light tracking-[0.3em] uppercase mt-6 drop-shadow-[0_0_15px_rgba(255,0,255,0.3)]">
-            Te Con Floyd en Vivo
+            Te Con Floyd en C.C. Musicleta
           </h1>
           <p className="text-floyd-pink tracking-[0.4em] text-sm uppercase font-light mt-2">
             Apoya a la banda
@@ -70,32 +73,34 @@ export default function ShowPage() {
         )}
 
         {/* Newsletter Section */}
-        <div className="w-full bg-zinc-900/40 border border-zinc-800/50 p-8 rounded-sm relative overflow-hidden group">
-          <div className="absolute inset-0 bg-floyd-pink/0 group-hover:bg-floyd-pink/5 transition-colors duration-1000 pointer-events-none"></div>
+        {showNewsletter && (
+          <div className="w-full bg-zinc-900/40 border border-zinc-800/50 p-8 rounded-sm relative overflow-hidden group">
+            <div className="absolute inset-0 bg-floyd-pink/0 group-hover:bg-floyd-pink/5 transition-colors duration-1000 pointer-events-none"></div>
 
-          <div className="flex flex-col items-center text-center gap-4 relative z-10">
-            <h2 className="text-xl font-light tracking-[0.2em] uppercase">Súmate al Newsletter</h2>
-            <p className="text-zinc-400 text-sm font-light">
-              Déjanos tu correo para enterarte antes que nadie de nuestras próximas fechas y novedades.
-            </p>
-            <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-4 w-full mt-4">
-              <input
-                type="email"
-                placeholder="tu@email.com"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 bg-black border border-zinc-700 px-4 py-3 text-white focus:outline-none focus:border-floyd-pink focus:ring-1 focus:ring-floyd-pink transition-all rounded-sm placeholder:text-zinc-600"
-              />
-              <button
-                type="submit"
-                className="bg-zinc-800 hover:bg-floyd-pink hover:text-black text-white px-8 py-3 uppercase tracking-widest font-medium transition-all duration-300 rounded-sm"
-              >
-                Suscribirse
-              </button>
-            </form>
+            <div className="flex flex-col items-center text-center gap-4 relative z-10">
+              <h2 className="text-xl font-light tracking-[0.2em] uppercase">Súmate al Newsletter</h2>
+              <p className="text-zinc-400 text-sm font-light">
+                Déjanos tu correo para enterarte antes que nadie de nuestras próximas fechas y novedades.
+              </p>
+              <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-4 w-full mt-4">
+                <input
+                  type="email"
+                  placeholder="tu@email.com"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="flex-1 bg-black border border-zinc-700 px-4 py-3 text-white focus:outline-none focus:border-floyd-pink focus:ring-1 focus:ring-floyd-pink transition-all rounded-sm placeholder:text-zinc-600"
+                />
+                <button
+                  type="submit"
+                  className="bg-zinc-800 hover:bg-floyd-pink hover:text-black text-white px-8 py-3 uppercase tracking-widest font-medium transition-all duration-300 rounded-sm"
+                >
+                  Suscribirse
+                </button>
+              </form>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Donation Section */}
         <div className="w-full bg-zinc-900/40 border border-zinc-800/50 p-8 rounded-sm relative overflow-hidden group">
