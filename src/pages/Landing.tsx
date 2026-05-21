@@ -3,15 +3,7 @@ import MusicPlayer from '../components/MusicPlayer';
 
 function Landing() {
   const [activeSection, setActiveSection] = useState<string | null>("");
-  const [email, setEmail] = useState("");
-
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email) {
-      alert('¡Gracias por suscribirte! (Funcionalidad próximamente)');
-      setEmail('');
-    }
-  };
+  const [hasSeenFechas, setHasSeenFechas] = useState(false);
 
   const menuItems = [
     { id: "banda", name: "BANDA", href: "#banda" },
@@ -53,10 +45,21 @@ function Landing() {
               {menuItems.map((item) => (
                 <li key={item.id} className="relative group">
                   <button
-                    onClick={() => setActiveSection(item.id)}
-                    className="text-lg md:text-xl font-light tracking-[0.2em] text-gray-300 transition-colors duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(255,0,255,0.8)] uppercase bg-transparent border-none cursor-pointer"
+                    onClick={() => {
+                      setActiveSection(item.id);
+                      if (item.id === 'fechas') {
+                        setHasSeenFechas(true);
+                      }
+                    }}
+                    className="text-lg md:text-xl font-light tracking-[0.2em] text-gray-300 transition-colors duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(255,0,255,0.8)] uppercase bg-transparent border-none cursor-pointer relative"
                   >
                     {item.name}
+                    {item.id === 'fechas' && !hasSeenFechas && (
+                      <span className="absolute -top-1 -right-2 flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-floyd-pink opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-floyd-pink shadow-[0_0_8px_#ff00ff]"></span>
+                      </span>
+                    )}
                   </button>
                   <span className="absolute -bottom-2 left-0 w-0 h-[2px] bg-floyd-pink shadow-[0_0_10px_#ff00ff] transition-all duration-300 group-hover:w-full"></span>
                 </li>
@@ -70,18 +73,23 @@ function Landing() {
             <p className="text-xs text-zinc-500 font-light mb-2">
               Déjanos tu correo para enterarte antes que nadie de nuestras próximas fechas y novedades.
             </p>
-            <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row w-full gap-2">
+            <form
+              action="https://buttondown.com/api/emails/embed-subscribe/teconfloyd"
+              method="post"
+              target="_blank"
+              className="flex flex-col sm:flex-row w-full gap-2"
+            >
               <input
                 type="email"
+                name="email"
+                id="bd-email"
                 placeholder="tu@email.com"
                 required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 className="flex-1 bg-black/50 border border-zinc-800 px-4 py-2 text-white text-xs focus:outline-none focus:border-floyd-pink transition-all rounded-sm placeholder:text-zinc-600"
               />
               <button
                 type="submit"
-                className="bg-zinc-800 hover:bg-floyd-pink hover:text-black text-white px-4 py-2 uppercase tracking-widest text-[10px] sm:text-xs font-medium transition-all duration-300 rounded-sm"
+                className="bg-zinc-800 hover:bg-floyd-pink hover:text-black text-white px-4 py-2 uppercase tracking-widest text-[10px] sm:text-xs font-medium transition-all duration-300 rounded-sm cursor-pointer"
               >
                 Suscribirse
               </button>
@@ -240,22 +248,109 @@ function Landing() {
                 Fechas
               </h2>
 
-              {/* CARTEL DE PRÓXIMAMENTE (Destacado) */}
-              <div className="flex flex-col items-center justify-center py-12 px-4 border border-floyd-pink/20 bg-black relative overflow-hidden group">
-                {/* Brillo de fondo pulsante para generar expectativa */}
-                <div className="absolute inset-0 bg-floyd-pink/5 blur-xl group-hover:bg-floyd-pink/10 transition-colors duration-1000 animate-pulse-slow pointer-events-none"></div>
+              {/* TICKET DE PRÓXIMO SHOW (Destacado) */}
+              <div className="relative group overflow-hidden border border-floyd-pink/30 bg-zinc-950/80 backdrop-blur-md rounded-sm transition-all duration-500 hover:border-floyd-pink hover:shadow-[0_0_30px_rgba(255,0,255,0.15)] flex flex-col md:flex-row">
+                
+                {/* Decoración: Glow de fondo sutil */}
+                <div className="absolute -inset-px bg-gradient-to-r from-floyd-pink/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
 
-                <h3 className="text-xl md:text-2xl tracking-[0.3em] md:tracking-[0.5em] text-white uppercase z-10 text-center font-light">
-                  Pronto Nuevas Fechas
-                </h3>
-                <p className="text-floyd-pink mt-4 tracking-[0.2em] md:tracking-[0.4em] text-xs md:text-sm font-light uppercase z-10 text-center opacity-80">
-                  Gira 2026 en preparación
-                </p>
+                {/* SECCIÓN FECHA (Estilo Talón de Ticket) */}
+                <div className="flex flex-col items-center justify-center p-6 md:p-8 bg-black/80 md:w-52 border-b md:border-b-0 md:border-r border-dashed border-zinc-800 relative">
+                  <span className="text-zinc-500 text-[10px] tracking-[0.3em] uppercase font-light mb-1">Sábado</span>
+                  <span className="text-5xl md:text-6xl font-extrabold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-400 drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
+                    27
+                  </span>
+                  <span className="text-floyd-pink font-mono tracking-[0.2em] text-sm md:text-base mt-1 uppercase font-semibold">
+                    JUNIO
+                  </span>
+                  <span className="text-zinc-600 text-[10px] tracking-widest font-mono mt-1">2026</span>
+                  
+                  {/* Círculos troquelados arriba y abajo en desktop para el look de ticket */}
+                  <div className="hidden md:block absolute -top-3 -right-3 w-6 h-6 bg-black rounded-full border border-zinc-900 z-10"></div>
+                  <div className="hidden md:block absolute -bottom-3 -right-3 w-6 h-6 bg-black rounded-full border border-zinc-900 z-10"></div>
+                </div>
 
-                {/* Líneas decorativas top y bottom */}
-                <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-floyd-pink/50 to-transparent"></div>
-                <div className="absolute bottom-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-floyd-pink/50 to-transparent"></div>
+                {/* SECCIÓN DETALLES (Cuerpo del Ticket) */}
+                <div className="flex-1 p-6 md:p-8 flex flex-col justify-between gap-6 relative">
+                  
+                  {/* Badges en la esquina superior derecha */}
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 md:absolute md:top-6 md:right-8 self-start">
+                    <div className="flex items-center gap-2">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-floyd-pink opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-floyd-pink"></span>
+                      </span>
+                      <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-floyd-pink">
+                        ¡NUEVA FECHA!
+                      </span>
+                    </div>
+                    <span className="hidden sm:inline text-zinc-700">|</span>
+                    <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-emerald-400 bg-emerald-950/30 border border-emerald-500/20 px-2 py-0.5 rounded-sm">
+                      Entrada Libre & Gratuita
+                    </span>
+                  </div>
+
+                  {/* Información del Evento */}
+                  <div className="flex flex-col gap-2 mt-2 md:mt-4">
+                    <h3 className="text-2xl md:text-3xl font-light tracking-wide text-white group-hover:text-floyd-pink transition-colors duration-300">
+                      C.C. Musicleta
+                    </h3>
+                    
+                    <div className="flex flex-col gap-1.5 text-zinc-400">
+                      <div className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-floyd-pink flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span className="text-sm md:text-base font-light tracking-wider">
+                          Aguirre 489, Villa Crespo, CABA
+                        </span>
+                      </div>
+                      
+                      <div className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-floyd-pink flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span className="text-sm font-light tracking-wider">
+                          Apertura de puertas: 19:00 hs
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <p className="text-zinc-500 text-xs font-light mt-1 tracking-wide">
+                      * El ingreso es por orden de llegada hasta agotar la capacidad del lugar. ¡Vení temprano!
+                    </p>
+                  </div>
+
+                  {/* Botones de Acción */}
+                  <div className="flex flex-wrap gap-4 mt-2">
+                    <a
+                      href="https://www.google.com/maps/search/?api=1&query=Aguirre+489,+CABA,+C.C.+Musicleta"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 px-4 py-2 border border-zinc-800 hover:border-zinc-500 hover:bg-zinc-900/50 text-zinc-300 hover:text-white transition-all duration-300 text-xs uppercase tracking-widest rounded-sm"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 01.553-.894L9 2m0 18l6-3m-6 3V2m6 15l5.447 2.724A1 1 0 0021 18.75V7.99a1 1 0 00-.553-.893L15 4m0 12V4m0 0L9 2" />
+                      </svg>
+                      Cómo llegar
+                    </a>
+                    
+                    <a
+                      href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=T%C3%A9+Con+Floyd+en+C.C.+Musicleta&dates=20260627T190000/20260627T220000&details=Show+en+vivo+tributo+a+Pink+Floyd.+Direcci%C3%B3n%3A+Aguirre+489%2C+CABA.+Entrada+libre+y+gratuita+con+contribuci%C3%B3n+voluntaria.&location=C.C.+Musicleta%2C+Aguirre+489%2C+CABA"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 px-5 py-2 bg-floyd-pink hover:bg-white text-black font-semibold transition-all duration-300 text-xs uppercase tracking-widest rounded-sm shadow-[0_0_15px_rgba(255,0,255,0.3)] hover:shadow-[0_0_20px_rgba(255,255,255,0.5)]"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      Agendar Fecha
+                    </a>
+                  </div>
+                </div>
               </div>
+
 
               {/* LISTA DE SHOWS ANTERIORES */}
               <div className="flex flex-col gap-4 mt-2">
