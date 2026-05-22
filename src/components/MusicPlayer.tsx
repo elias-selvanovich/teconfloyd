@@ -14,6 +14,14 @@ export default function MusicPlayer() {
   const [volume] = useState(0.5);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showNext, setShowNext] = useState(false);
+  const [showHint, setShowHint] = useState(false);
+  const [hasDismissedHint, setHasDismissedHint] = useState(() => {
+    try {
+      return sessionStorage.getItem('dismissed-music-hint') === 'true';
+    } catch {
+      return false;
+    }
+  });
 
   const currentSong = PLAYLIST[currentIndex];
   const nextSong = PLAYLIST[(currentIndex + 1) % PLAYLIST.length];
@@ -27,6 +35,25 @@ export default function MusicPlayer() {
     return () => clearInterval(interval);
   }, [playing]);
 
+  // Descartar pista si empieza a reproducir
+  useEffect(() => {
+    if (playing) {
+      try {
+        sessionStorage.setItem('dismissed-music-hint', 'true');
+      } catch {}
+      setHasDismissedHint(true);
+    }
+  }, [playing]);
+
+  // Mostrar sugerencia flotante después de 2.5 segundos
+  useEffect(() => {
+    if (hasDismissedHint || playing) return;
+    const timer = setTimeout(() => {
+      setShowHint(true);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, [hasDismissedHint, playing]);
+
   const handleEnded = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % PLAYLIST.length);
     setShowNext(false);
@@ -35,6 +62,29 @@ export default function MusicPlayer() {
   return (
     <div className="fixed bottom-4 left-4 md:bottom-8 md:left-8 z-50 flex items-center">
       
+      {/* SUGERENCIA FLOTANTE (Ambientar sitio) */}
+      {showHint && !playing && !hasDismissedHint && (
+        <div className="absolute bottom-16 md:bottom-20 left-0 bg-zinc-950/95 border border-floyd-pink/40 px-3.5 py-2 rounded-sm backdrop-blur-md shadow-[0_0_20px_rgba(255,0,255,0.15)] animate-float text-[10px] tracking-[0.2em] text-zinc-300 font-light uppercase whitespace-nowrap flex items-center gap-3 z-30 transition-all duration-500">
+          <span className="text-floyd-pink font-semibold animate-pulse">♪</span>
+          <span>Ambientar sitio</span>
+          <button 
+            onClick={(e) => { 
+              e.stopPropagation();
+              try {
+                sessionStorage.setItem('dismissed-music-hint', 'true');
+              } catch {}
+              setHasDismissedHint(true); 
+            }} 
+            className="text-zinc-500 hover:text-floyd-pink text-xs ml-1 font-mono cursor-pointer transition-colors"
+            title="Cerrar"
+          >
+            ✕
+          </button>
+          {/* Flecha apuntando abajo */}
+          <div className="absolute -bottom-1.5 left-5 md:left-6 w-2.5 h-2.5 bg-zinc-950 border-r border-b border-floyd-pink/40 rotate-45"></div>
+        </div>
+      )}
+
       {/* REPRODUCTOR INVISIBLE */}
       <div className="hidden">
         <ReactPlayer
@@ -50,19 +100,22 @@ export default function MusicPlayer() {
       {/* BOTÓN DE CONTROL NEÓN */}
       <button
         onClick={() => setPlaying(!playing)}
-        className={`relative group w-12 h-12 md:w-14 md:h-14 rounded-full border flex flex-shrink-0 items-center justify-center transition-all duration-500 z-20 ${
+        className={`relative group w-12 h-12 md:w-14 md:h-14 rounded-full border flex flex-shrink-0 items-center justify-center transition-all duration-500 z-20 cursor-pointer ${
           playing 
-            ? 'border-floyd-pink bg-black text-floyd-pink shadow-[0_0_15px_#ff00ff]' 
-            : 'border-zinc-700 bg-black/50 text-zinc-500 hover:border-floyd-pink hover:text-floyd-pink'
+            ? 'border-floyd-pink bg-black text-floyd-pink shadow-[0_0_15px_#ff00ff] scale-100' 
+            : 'border-floyd-pink/40 bg-black/60 text-zinc-300 shadow-[0_0_10px_rgba(255,0,255,0.1)] hover:border-floyd-pink hover:text-floyd-pink hover:shadow-[0_0_15px_#ff00ff] hover:scale-105'
         }`}
       >
+        {!playing && (
+          <div className="absolute inset-0 rounded-full border border-floyd-pink/20 animate-pulse-slow"></div>
+        )}
         {playing && (
-          <div className="absolute inset-0 rounded-full border border-floyd-pink animate-ping opacity-20"></div>
+          <div className="absolute inset-0 rounded-full border border-floyd-pink animate-ping opacity-25"></div>
         )}
         {playing ? (
           <svg className="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
         ) : (
-          <svg className="w-5 h-5 md:w-6 md:h-6 ml-1" fill="currentColor" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          <svg className="w-5 h-5 md:w-6 md:h-6 ml-1 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
         )}
       </button>
 

@@ -64,6 +64,38 @@ export default function ShowPage() {
           <p className="text-floyd-pink tracking-[0.4em] text-sm uppercase font-light mt-2">
             Apoya a la banda
           </p>
+
+          {/* Redes compactas (Pills/Chips) */}
+          <div className="flex items-center gap-3 mt-4 flex-wrap justify-center z-10">
+            {/* INSTAGRAM */}
+            <a
+              href="https://instagram.com/teconfloyd"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-4 py-1.5 bg-zinc-900/30 border border-zinc-800/80 hover:border-floyd-pink hover:bg-zinc-900/80 transition-all duration-300 rounded-full text-xs text-zinc-300 hover:text-white group/pill"
+            >
+              <svg className="w-4 h-4 text-zinc-500 group-hover/pill:text-floyd-pink transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+              <span className="font-mono tracking-wider text-[11px] group-hover/pill:drop-shadow-[0_0_6px_rgba(255,0,255,0.6)] transition-all">@teconfloyd</span>
+            </a>
+
+            {/* YOUTUBE */}
+            <a
+              href="https://www.youtube.com/@TeConFloyd"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-4 py-1.5 bg-zinc-900/30 border border-zinc-800/80 hover:border-floyd-pink hover:bg-zinc-900/80 transition-all duration-300 rounded-full text-xs text-zinc-300 hover:text-white group/pill"
+            >
+              <svg className="w-4 h-4 text-zinc-500 group-hover/pill:text-floyd-pink transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                <path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33 2.78 2.78 0 001.94 2C5.12 19.5 12 19.5 12 19.5s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.33 29 29 0 00-.46-5.33z"></path>
+                <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+              </svg>
+              <span className="font-mono tracking-wider text-[11px] group-hover/pill:drop-shadow-[0_0_6px_rgba(255,0,255,0.6)] transition-all">@TeConFloyd</span>
+            </a>
+          </div>
         </div>
 
         {paymentStatus === 'failure' && (

@@ -6,3 +6,17 @@ body {
   color: #fff;
   overflow-x: hidden; /* Evitar scroll horizontal si hay brillos grandes */
 }
+
+/* Animación de flotación suave para tooltips e indicaciones */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
