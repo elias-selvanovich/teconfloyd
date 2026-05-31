@@ -67,6 +67,24 @@ function Landing() {
             </ul>
           </nav>
 
+          {/* Substack Newsletter Embed */}
+          <div className="flex flex-col items-center gap-4 mt-2 w-full max-w-[480px] z-10">
+            <span className="text-[10px] md:text-xs tracking-[0.3em] text-zinc-500 uppercase font-light">
+              Suscribite al newsletter
+            </span>
+            <div className="w-full overflow-hidden rounded-sm">
+              <iframe
+                src="https://teconfloyd.substack.com/embed"
+                width="100%"
+                height="150"
+                style={{ background: 'white' }}
+                frameBorder="0"
+                scrolling="no"
+                title="Te Con Floyd Substack"
+              ></iframe>
+            </div>
+          </div>
+
           <footer className="absolute bottom-8 text-white/20 text-xs tracking-widest uppercase">
             Te Con  Floyd • Tributo a Pink Floyd • 2026
           </footer>

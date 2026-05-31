@@ -7,7 +7,8 @@ const PLAYLIST = [
   { title: "Breathe", url: "https://www.youtube.com/watch?v=jcz0YxYl6Ac" },
   { title: "One of these days", url: "https://www.youtube.com/watch?v=raV_A8YcBu0" },
   { title: "Time", url: "https://www.youtube.com/watch?v=yl-Ms_ek-kE" },
-  { title: "Have a Cigar", url: "https://www.youtube.com/watch?v=Eq8ZiZ9xiLw" }
+  { title: "Have a Cigar", url: "https://www.youtube.com/watch?v=Eq8ZiZ9xiLw" },
+  { title: "The Gnome", url: "https://www.youtube.com/watch?v=eLZOrqhSH40" }
 ];
 
 export default function MusicPlayer() {
@@ -102,8 +103,8 @@ export default function MusicPlayer() {
       <button
         onClick={() => setPlaying(!playing)}
         className={`relative group w-12 h-12 md:w-14 md:h-14 rounded-full border flex flex-shrink-0 items-center justify-center transition-all duration-500 z-20 cursor-pointer ${playing
-            ? 'border-floyd-pink bg-black text-floyd-pink shadow-[0_0_15px_#ff00ff] scale-100'
-            : 'border-floyd-pink/40 bg-black/60 text-zinc-300 shadow-[0_0_10px_rgba(255,0,255,0.1)] hover:border-floyd-pink hover:text-floyd-pink hover:shadow-[0_0_15px_#ff00ff] hover:scale-105'
+          ? 'border-floyd-pink bg-black text-floyd-pink shadow-[0_0_15px_#ff00ff] scale-100'
+          : 'border-floyd-pink/40 bg-black/60 text-zinc-300 shadow-[0_0_10px_rgba(255,0,255,0.1)] hover:border-floyd-pink hover:text-floyd-pink hover:shadow-[0_0_15px_#ff00ff] hover:scale-105'
           }`}
       >
         {!playing && (
