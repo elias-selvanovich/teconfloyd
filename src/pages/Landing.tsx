@@ -1,13 +1,62 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MusicPlayer from '../components/MusicPlayer';
+
+interface SubstackPost {
+  title: string;
+  link: string;
+  pubDate: string;
+  description: string;
+  imageUrl: string | null;
+}
+
+const formatPostDate = (dateString: string) => {
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString;
+    const day = date.getDate();
+    const months = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'];
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+    return `${day} ${month} ${year}`;
+  } catch (e) {
+    return dateString;
+  }
+};
 
 function Landing() {
   const [activeSection, setActiveSection] = useState<string | null>("");
   const [hasSeenFechas, setHasSeenFechas] = useState(false);
+  const [posts, setPosts] = useState<SubstackPost[]>([]);
+  const [loadingPosts, setLoadingPosts] = useState(false);
+  const [postsError, setPostsError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (activeSection === 'novedades') {
+      const fetchPosts = async () => {
+        setLoadingPosts(true);
+        setPostsError(null);
+        try {
+          const response = await fetch('/api/substack-feed');
+          if (!response.ok) {
+            throw new Error('No se pudo cargar el feed de Substack');
+          }
+          const data = await response.json();
+          setPosts(data.items || []);
+        } catch (error: any) {
+          console.error('Error al cargar posts:', error);
+          setPostsError(error.message || 'Error al conectar con el servidor.');
+        } finally {
+          setLoadingPosts(false);
+        }
+      };
+      fetchPosts();
+    }
+  }, [activeSection]);
 
   const menuItems = [
     { id: "banda", name: "BANDA", href: "#banda" },
     { id: "media", name: "MEDIA", href: "#media" },
+    { id: "novedades", name: "NOVEDADES", href: "#novedades" },
     { id: "fechas", name: "FECHAS", href: "#fechas" },
     { id: "contacto", name: "CONTACTO", href: "#contacto" },
     { id: "prensa", name: "PRENSA", href: "#prensa" },
@@ -232,6 +281,123 @@ function Landing() {
                   </div>
                 </div>
 
+              </div>
+            )
+          }
+
+          {
+            activeSection === 'novedades' && (
+              <div className="flex flex-col gap-10">
+                <h2 className="text-3xl md:text-4xl font-light tracking-[0.3em] text-white uppercase text-center mb-2">
+                  Novedades
+                </h2>
+
+                {loadingPosts && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
+                    {[1, 2, 3].map((n) => (
+                      <div key={n} className="flex flex-col border border-zinc-900 bg-zinc-950/40 rounded-sm overflow-hidden animate-pulse">
+                        <div className="w-full aspect-[16/10] bg-zinc-900"></div>
+                        <div className="p-6 flex flex-col gap-4 flex-1">
+                          <div className="h-4 bg-zinc-800 rounded w-1/3"></div>
+                          <div className="h-6 bg-zinc-800 rounded w-3/4"></div>
+                          <div className="h-16 bg-zinc-800 rounded w-full"></div>
+                          <div className="h-10 bg-zinc-800 rounded w-1/2 mt-auto"></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {postsError && (
+                  <div className="flex flex-col items-center justify-center text-center p-8 border border-floyd-pink/20 bg-zinc-950/60 rounded-sm max-w-lg mx-auto gap-6 my-8">
+                    <svg className="w-12 h-12 text-floyd-pink/60 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <div>
+                      <h3 className="text-xl font-medium tracking-wide text-white">No se pudieron cargar las novedades</h3>
+                      <p className="text-zinc-400 mt-2 text-sm font-light leading-relaxed">
+                        Hubo un problema al obtener las últimas publicaciones. Podés leerlas directamente en nuestro boletín oficial en Substack.
+                      </p>
+                    </div>
+                    <a
+                      href="https://teconfloyd.substack.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-6 py-3 bg-floyd-pink hover:bg-white text-black font-semibold transition-all duration-300 text-xs uppercase tracking-widest rounded-sm shadow-[0_0_15px_rgba(255,0,255,0.2)]"
+                    >
+                      Ir a teconfloyd.substack.com
+                    </a>
+                  </div>
+                )}
+
+                {!loadingPosts && !postsError && posts.length === 0 && (
+                  <div className="flex flex-col items-center justify-center text-center p-8 border border-zinc-800 bg-zinc-950/40 rounded-sm max-w-lg mx-auto gap-4 my-8">
+                    <p className="text-zinc-400 text-sm font-light">No hay publicaciones recientes disponibles.</p>
+                    <a
+                      href="https://teconfloyd.substack.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-floyd-pink hover:text-white transition-colors text-sm underline font-light"
+                    >
+                      Ver boletín en Substack
+                    </a>
+                  </div>
+                )}
+
+                {!loadingPosts && !postsError && posts.length > 0 && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
+                    {posts.map((post, index) => (
+                      <div
+                        key={index}
+                        className="group flex flex-col border border-zinc-850 bg-zinc-950/40 rounded-sm overflow-hidden hover:border-floyd-pink/40 hover:shadow-[0_0_30px_rgba(255,0,255,0.05)] transition-all duration-500 relative"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-b from-floyd-pink/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+                        
+                        <div className="w-full aspect-[16/10] bg-zinc-900 border-b border-zinc-900/50 overflow-hidden relative">
+                          {post.imageUrl ? (
+                            <img
+                              src={post.imageUrl}
+                              alt={post.title}
+                              className="w-full h-full object-cover grayscale opacity-75 group-hover:grayscale-0 group-hover:opacity-95 group-hover:scale-105 transition-all duration-700"
+                              loading="lazy"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-br from-zinc-900 via-zinc-950 to-black flex items-center justify-center relative overflow-hidden">
+                              <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_#ff00ff_1px,_transparent_1px)] [background-size:16px_16px]"></div>
+                              <svg viewBox="0 0 100 87" className="w-16 h-16 opacity-30 text-floyd-pink group-hover:opacity-60 transition-opacity duration-500">
+                                <polygon points="50,15 88,77 12,77" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                              </svg>
+                            </div>
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
+                        </div>
+
+                        <div className="p-6 flex flex-col flex-1 gap-3 relative z-10">
+                          <span className="text-[10px] tracking-[0.2em] font-mono text-floyd-pink uppercase">
+                            {formatPostDate(post.pubDate)}
+                          </span>
+                          <h3 className="text-xl font-medium tracking-wide text-gray-100 group-hover:text-white transition-colors duration-300 line-clamp-2">
+                            {post.title}
+                          </h3>
+                          <p className="text-zinc-400 text-sm font-light leading-relaxed line-clamp-3 mb-4">
+                            {post.description}
+                          </p>
+                          <a
+                            href={post.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-auto inline-flex items-center gap-2 text-xs uppercase tracking-widest text-zinc-300 group-hover:text-floyd-pink transition-all duration-300 font-semibold group-hover:drop-shadow-[0_0_5px_rgba(255,0,255,0.5)] self-start animate-pulse-slow"
+                          >
+                            Leer en Substack
+                            <svg className="w-3.5 h-3.5 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )
           }
