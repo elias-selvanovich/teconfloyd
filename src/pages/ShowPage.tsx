@@ -6,9 +6,8 @@ export default function ShowPage() {
   const paymentStatus = searchParams.get('status'); // MP can send back status
 
   const [loading, setLoading] = useState(false);
-  const [customAmount, setCustomAmount] = useState('');
-  const [showCustom, setShowCustom] = useState(false);
   const [email, setEmail] = useState('');
+  const [showDonation, setShowDonation] = useState(false);
 
   // Cambiar a true si deseas mostrar la seccion del newsletter en el show
   const showNewsletter = false;
@@ -61,8 +60,8 @@ export default function ShowPage() {
           <h1 className="text-4xl md:text-5xl font-light tracking-[0.3em] uppercase mt-6 drop-shadow-[0_0_15px_rgba(255,0,255,0.3)]">
             Te Con Floyd en C.C. Musicleta
           </h1>
-          <p className="text-floyd-pink tracking-[0.4em] text-sm uppercase font-light mt-2">
-            Apoya a la banda
+          <p className="text-zinc-300 text-sm max-w-md font-light leading-relaxed mt-4 px-4">
+            ¡Gracias por venir! Si te gustó el show, apoyanos siguiéndonos en redes
           </p>
 
           {/* Redes compactas (Pills/Chips) */}
@@ -94,6 +93,19 @@ export default function ShowPage() {
                 <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
               </svg>
               <span className="font-mono tracking-wider text-[11px] group-hover/pill:drop-shadow-[0_0_6px_rgba(255,0,255,0.6)] transition-all">@TeConFloyd</span>
+            </a>
+
+            {/* SUBSTACK */}
+            <a
+              href="https://teconfloyd.substack.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-4 py-1.5 bg-zinc-900/30 border border-zinc-800/80 hover:border-floyd-pink hover:bg-zinc-900/80 transition-all duration-300 rounded-full text-xs text-zinc-300 hover:text-white group/pill"
+            >
+              <svg className="w-4 h-4 text-zinc-500 group-hover/pill:text-floyd-pink transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M22.539 8.242H1.46V5.406h21.08zM1.46 10.812V24L12 18.11L22.54 24V10.812zM22.54 0H1.46v2.836h21.08z" />
+              </svg>
+              <span className="font-mono tracking-wider text-[11px] group-hover/pill:drop-shadow-[0_0_6px_rgba(255,0,255,0.6)] transition-all">Substack</span>
             </a>
           </div>
         </div>
@@ -135,66 +147,56 @@ export default function ShowPage() {
         )}
 
         {/* Donation Section */}
-        <div className="w-full bg-zinc-900/40 border border-zinc-800/50 p-8 rounded-sm relative overflow-hidden group">
+        <div className="w-full bg-zinc-900/40 border border-zinc-800/50 rounded-sm relative overflow-hidden group">
           <div className="absolute inset-0 bg-floyd-pink/0 group-hover:bg-floyd-pink/5 transition-colors duration-1000 pointer-events-none"></div>
 
-          <div className="flex flex-col items-center text-center gap-6 relative z-10">
-            <h2 className="text-xl font-light tracking-[0.2em] uppercase">Aporte Voluntario</h2>
-            <p className="text-zinc-400 text-sm font-light max-w-lg">
-              Si estás disfrutando el show y querés apoyar nuestro proyecto, podés hacer un aporte a través de Mercado Pago. ¡Todo suma para seguir creciendo!
-            </p>
+          <button
+            onClick={() => setShowDonation(!showDonation)}
+            className="w-full p-8 flex flex-col items-center text-center gap-4 relative z-10 cursor-pointer focus:outline-none hover:bg-zinc-900/20 transition-all duration-300"
+          >
+            <div className="flex items-center gap-3 justify-center max-w-lg">
+              <p className="text-zinc-200 text-base font-light leading-relaxed">
+                Si querés colaborar con la banda, podés hacerlo vía Mercado Pago
+              </p>
+              <svg
+                className={`w-5 h-5 text-zinc-500 transition-transform duration-300 shrink-0 ${showDonation ? 'rotate-180 text-floyd-pink' : ''}`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+              </svg>
+            </div>
+          </button>
 
-            {loading ? (
-              <div className="py-12 flex flex-col items-center gap-4">
-                <div className="w-10 h-10 border-2 border-zinc-700 border-t-floyd-pink rounded-full animate-spin"></div>
-                <p className="text-floyd-pink animate-pulse tracking-widest uppercase text-sm">Redirigiendo...</p>
-              </div>
-            ) : (
-              <div className="w-full mt-4 flex flex-col gap-4">
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                  {donationAmounts.map((amount) => (
-                    <button
-                      key={amount}
-                      onClick={() => handleDonate(amount)}
-                      className="border border-zinc-700 hover:border-floyd-pink hover:bg-floyd-pink/10 py-4 px-2 text-zinc-300 hover:text-white transition-all duration-300 rounded-sm text-lg font-light tracking-wider"
-                    >
-                      ${amount}
-                    </button>
-                  ))}
+          {showDonation && (
+            <div className="px-8 pb-8 flex flex-col items-center text-center gap-6 relative z-10 border-t border-zinc-800/50 pt-6">
+              <p className="text-zinc-400 text-sm font-light max-w-lg leading-relaxed">
+                Hacemos todo a pulmón y de manera independiente. Si disfrutaste de la fecha y tenés la posibilidad de colaborar, tu aporte nos ayuda muchísimo a seguir ensayando, grabar nuevas canciones y mantener vivo este proyecto. ¡Cualquier ayuda es bienvenida y la agradecemos de corazón!
+              </p>
+              {loading ? (
+                <div className="py-12 flex flex-col items-center gap-4">
+                  <div className="w-10 h-10 border-2 border-zinc-700 border-t-floyd-pink rounded-full animate-spin"></div>
+                  <p className="text-floyd-pink animate-pulse tracking-widest uppercase text-sm">Redirigiendo...</p>
                 </div>
-
-                {showCustom ? (
-                  <div className="flex flex-col sm:flex-row gap-4 mt-2">
-                    <div className="relative flex-1">
-                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500">$</span>
-                      <input
-                        type="number"
-                        min="100"
-                        placeholder="Monto"
-                        value={customAmount}
-                        onChange={(e) => setCustomAmount(e.target.value)}
-                        className="w-full bg-black border border-zinc-700 pl-8 pr-4 py-3 text-white focus:outline-none focus:border-floyd-pink transition-all rounded-sm"
-                      />
-                    </div>
-                    <button
-                      onClick={() => handleDonate(Number(customAmount))}
-                      disabled={!customAmount || Number(customAmount) <= 0}
-                      className="bg-floyd-pink/20 border border-floyd-pink hover:bg-floyd-pink hover:text-black text-floyd-pink disabled:opacity-50 disabled:hover:bg-floyd-pink/20 disabled:hover:text-floyd-pink px-8 py-3 uppercase tracking-widest font-medium transition-all duration-300 rounded-sm"
-                    >
-                      Aportar
-                    </button>
+              ) : (
+                <div className="w-full flex flex-col gap-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    {donationAmounts.map((amount) => (
+                      <button
+                        key={amount}
+                        onClick={() => handleDonate(amount)}
+                        className="border border-zinc-700 hover:border-floyd-pink hover:bg-floyd-pink/10 py-4 px-2 text-zinc-300 hover:text-white transition-all duration-300 rounded-sm text-lg font-light tracking-wider cursor-pointer"
+                      >
+                        ${amount}
+                      </button>
+                    ))}
                   </div>
-                ) : (
-                  <button
-                    onClick={() => setShowCustom(true)}
-                    className="w-full border border-zinc-800 bg-black hover:border-zinc-500 py-4 text-zinc-400 hover:text-white transition-all duration-300 rounded-sm tracking-widest uppercase text-sm mt-2"
-                  >
-                    Otro Monto
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
       </div>
