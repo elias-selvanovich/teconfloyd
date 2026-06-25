@@ -33,14 +33,16 @@ export default async function handler(req: any, res: any) {
     }
 
     // El host base (para las URLs de retorno)
-    // Vercel inyecta VERCEL_URL o VERCEL_PROJECT_PRODUCTION_URL
-    const protocol = process.env.NODE_ENV === 'development' ? 'http://' : 'https://';
-    let host = 'http://localhost:5173'; // Fallback para dev local
+    let host = process.env.SITE_URL || 'http://localhost:5173';
 
-    if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
-      host = `${protocol}${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
-    } else if (process.env.VERCEL_URL) {
-      host = `${protocol}${process.env.VERCEL_URL}`;
+    // Si no está configurada SITE_URL, intentamos usar las variables de Vercel
+    if (!process.env.SITE_URL) {
+      const protocol = process.env.NODE_ENV === 'development' ? 'http://' : 'https://';
+      if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+        host = `${protocol}${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+      } else if (process.env.VERCEL_URL) {
+        host = `${protocol}${process.env.VERCEL_URL}`;
+      }
     }
 
     const preference = new Preference(client);
