@@ -78,7 +78,7 @@ export default function ShowPage() {
                 <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
                 <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
               </svg>
-              <span className="font-mono tracking-wider text-[11px] group-hover/pill:drop-shadow-[0_0_6px_rgba(255,0,255,0.6)] transition-all">@teconfloyd</span>
+              <span className="font-mono font-semibold tracking-wider text-[11px] group-hover/pill:drop-shadow-[0_0_6px_rgba(255,0,255,0.6)] transition-all">@teconfloyd</span>
             </a>
 
             {/* YOUTUBE */}
@@ -92,7 +92,7 @@ export default function ShowPage() {
                 <path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33 2.78 2.78 0 001.94 2C5.12 19.5 12 19.5 12 19.5s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.33 29 29 0 00-.46-5.33z"></path>
                 <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
               </svg>
-              <span className="font-mono tracking-wider text-[11px] group-hover/pill:drop-shadow-[0_0_6px_rgba(255,0,255,0.6)] transition-all">@TeConFloyd</span>
+              <span className="font-mono font-semibold tracking-wider text-[11px] group-hover/pill:drop-shadow-[0_0_6px_rgba(255,0,255,0.6)] transition-all">@TeConFloyd</span>
             </a>
 
             {/* SUBSTACK */}
@@ -105,7 +105,7 @@ export default function ShowPage() {
               <svg className="w-4 h-4 text-zinc-500 group-hover/pill:text-floyd-pink transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M22.539 8.242H1.46V5.406h21.08zM1.46 10.812V24L12 18.11L22.54 24V10.812zM22.54 0H1.46v2.836h21.08z" />
               </svg>
-              <span className="font-mono tracking-wider text-[11px] group-hover/pill:drop-shadow-[0_0_6px_rgba(255,0,255,0.6)] transition-all">Substack</span>
+              <span className="font-mono font-semibold tracking-wider text-[11px] group-hover/pill:drop-shadow-[0_0_6px_rgba(255,0,255,0.6)] transition-all">Substack</span>
             </a>
           </div>
         </div>
@@ -147,7 +147,7 @@ export default function ShowPage() {
         )}
 
         {/* Donation Section */}
-        <div className="w-full bg-zinc-900/40 border border-zinc-800/50 rounded-sm relative overflow-hidden group">
+        <div className="w-full bg-zinc-900/40 border border-floyd-pink/50 shadow-[0_0_15px_rgba(255,0,255,0.15)] rounded-sm relative overflow-hidden group">
           <div className="absolute inset-0 bg-floyd-pink/0 group-hover:bg-floyd-pink/5 transition-colors duration-1000 pointer-events-none"></div>
 
           <button
@@ -171,7 +171,7 @@ export default function ShowPage() {
           </button>
 
           {showDonation && (
-            <div className="px-8 pb-8 flex flex-col items-center text-center gap-6 relative z-10 border-t border-zinc-800/50 pt-6">
+            <div className="px-8 pb-8 flex flex-col items-center text-center gap-6 relative z-10 border-t border-floyd-pink/20 pt-6">
               <p className="text-zinc-400 text-sm font-light max-w-lg leading-relaxed">
                 Hacemos todo a pulmón y de manera independiente. Si disfrutaste de la fecha y tenés la posibilidad de colaborar, tu aporte nos ayuda muchísimo a seguir ensayando, grabar nuevas canciones y mantener vivo este proyecto. ¡Cualquier ayuda es bienvenida y la agradecemos de corazón!
               </p>
